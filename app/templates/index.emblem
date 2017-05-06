@@ -1,0 +1,56 @@
+if empty
+  p.lead.text-center Ember FHIR adapter designed for simple and direct interraction with FHIR DSTU3 servers straight from the Ember front end using the ember-fhir adapter.
+
+  .well
+    p
+      ' This demo/example is using a public FHIR server
+      strong
+        ' UHN/HAPI Server (STU3 FHIR).
+      ' This server is hosted elsewhere on the internet
+      strong
+        ' http://fhirtest.uhn.ca/baseDstu3
+      ' but is being accessed using this ember frontend with the
+      strong
+        a href='http://github.com/davekago/ember-fhir' target='_blank'
+          ' ember-fhir
+      | adapter
+
+    p
+      = fa-icon 'warning' class='text-danger'
+      '
+      strong.text-danger
+        ' The FHIR server is NOT a production server!
+      | No personal health information or any other confidential information is stored there. That server is regularly purged and reloaded with fixed test data - so results may vary from time to time.
+
+  .panel.panel-default
+    .table-responsive
+      table.table.table-condensed.table-hover.table-striped.table-bordered
+        tbody
+          tr
+            td Server
+            td UHN Test Server (STU3 Resources)
+          tr
+            td FHIR Base
+            td
+              a href='http://fhirtest.uhn.ca/baseDstu3' target='_blank' http://fhirtest.uhn.ca/baseDstu3
+          tr
+            td Ember Adapter
+            td
+              a href='http://github.com/davekago/ember-fhir' target='_blank' ember-fhir
+
+  .panel.panel-default
+    .panel-heading
+      strong Server Actions
+    .panel-body
+      p
+        button.btn.btn-primary{action (route-action 'capability')}
+          = fa-icon 'dot-circle-o'
+          '
+          | Capability Statement
+        '
+        ' Retrieve the server's capability statement
+        em (a.k.a Conformance)
+else
+  p.lead = resource
+  pre
+    = to-json model

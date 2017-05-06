@@ -1,0 +1,47 @@
+= notification-container position='top'
+
+nav.navbar.navbar-inverse.navbar-fixed-top
+  .container-fluid
+    .navbar-header
+      button.navbar-toggle.collapsed data-toggle='collapse' data-targer='#ember-fhir-example-navbar' aria-expaded='false'
+        span.sr-only Toggle navigation
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      = link-to 'application' (query-params resource=undefined) class='navbar-brand'
+        img.img-responsive src='/images/ember.png' alt='Ember'
+        img.img-responsive src='/images/fhir-logo-www.png' alt='FHIR'
+
+    #ember-fhir-example-navbar.collapse.navbar-collapse
+      ul.nav.navbar-nav.navbar-right
+        li
+          a href='javascript:void(0);'
+            span.glyphicon.glyphicon-fire.text-primary
+            '
+            span.text-primary
+              ' Server:
+            | UHN/HAPI Server (STU3 FHIR)
+        li
+          a href='http://github.com/davekago/ember-fhir-example'
+            = fa-icon 'github' class='text-primary'
+            '
+            | Source
+
+.container-fluid
+  .row
+    .col-sm-4
+      .panel.panel-default
+        .panel-heading
+          form
+            .form-group
+              .input-group
+                .input-group-addon
+                  = fa-icon 'filter'
+                = input value=filter id='filter' class='form-control' placeholder='Filter resources...' key-up=(action (route-action 'filter'))
+
+        .list-group
+          = each resources as |resource|
+            = link-to 'application' (query-params resource=resource) class='list-group-item'
+              = resource
+    .col-sm-8
+      = outlet

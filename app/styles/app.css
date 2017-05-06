@@ -1,0 +1,21 @@
+body { padding-top: 70px; }
+
+.btn:focus {
+  outline: none;
+}
+
+.navbar-brand {
+  padding: 5px 15px;
+}
+.navbar-brand > .img-responsive {
+  display: inline-block;
+  height: 40px;
+}
+
+.form-group {
+  margin-bottom: 0;
+}
+
+.list-group-item > a {
+  color: #333;
+}
