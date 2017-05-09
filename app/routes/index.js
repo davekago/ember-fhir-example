@@ -57,8 +57,8 @@ export default Ember.Route.extend({
       }
     }
 
-    const start = get(this, 'start'),
-      end = get(this, 'end'),
+    const start = get(this, 'start') || moment().utc(),
+      end = get(this, 'end') || moment().utc(),
       diff = end.diff(start);
     set(controller, 'elapsed', diff < 1000 ? `in ${diff}ms` : end.from(start));
     set(controller, 'code', `
