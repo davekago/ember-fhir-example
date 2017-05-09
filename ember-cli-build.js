@@ -4,6 +4,16 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
+    'minifyJS': {
+      options: {
+        'max-line-len': 120000
+      }
+    },
+    'uglifyJS': {
+      options: {
+        'max-line-len': 120000
+      }
+    },
     'ember-bootstrap': {
       'bootstrapVersion': 3,
       'importBootstrapFont': true,

@@ -11,9 +11,9 @@ export default EmberHighlightCode.extend({
   didRender() {
     const that = this,
       code = get(that, 'code') || '',
-      spaces = code.replace(/\n/, '').match(/^\s+/g),
+      spaces = (code || '').replace(/\n/, '').match(/^\s+/g),
       spacesRegExp = new RegExp('^' + spaces, 'gm'),
-      formattedCode = code.replace(spacesRegExp, '').replace(/^\s+|\s+$/g, '');
+      formattedCode = (code || '').replace(spacesRegExp, '').replace(/^\s+|\s+$/g, '');
 
     that.$().html(formattedCode);
     this.didInsertElement();
