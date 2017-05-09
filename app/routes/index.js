@@ -57,21 +57,23 @@ export default Ember.Route.extend({
       }
     }
 
-    const start = get(this, 'start') || moment().utc(),
-      end = get(this, 'end') || moment().utc(),
-      diff = end.diff(start);
-    set(controller, 'elapsed', diff < 1000 ? `in ${diff}ms` : end.from(start));
-    set(controller, 'code', `
-      routes/${dasherize(resource)}.js
+    if (isPresent(resource)) {
+      const start = get(this, 'start'),
+        end = get(this, 'end'),
+        diff = end.diff(start);
+      set(controller, 'elapsed', diff < 1000 ? `in ${diff}ms` : end.from(start));
+      set(controller, 'code', `
+        routes/${dasherize(resource)}.js
 
-      ...
-      model() {
-        return this.store.query(${resource}, {
-          _count: 20
-        });
-      }
-      ...
-    `);
+        ...
+        model() {
+          return this.store.query(${resource}, {
+            _count: 20
+          });
+        }
+        ...
+      `);
+    }
   },
 
   actions: {
