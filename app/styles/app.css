@@ -19,3 +19,46 @@ body { padding-top: 70px; }
 .list-group-item > a {
   color: #333;
 }
+
+.powered-by {
+  font-weight: 600;
+}
+
+.powered-by .img-responsive {
+  display: inline-block;
+  height: 50px;
+  vertical-align: bottom;
+}
+
+pre.ember-highlight-code {
+  border: 0;
+  background: #333;
+  color: #f5f5f5;
+}
+
+small.block {
+  display: block;
+}
+
+small.block > .text-muted {
+  padding-right: 5px;
+}
+
+td.results {
+  padding: 0 !important;
+}
+
+td.results > .panel {
+  border: none;
+  border-radius: 0;
+  margin-bottom: 0;
+}
+
+td.results > .panel:last-of-type > .panel-body {
+  padding: 0;
+}
+
+td.results > .panel > .panel-body > pre {
+  border: none;
+  border-radius: 0;
+}

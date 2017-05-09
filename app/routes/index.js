@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import moment from 'moment';
 
 const {
 	A,
@@ -7,7 +8,7 @@ const {
   isPresent,
   inject: { service },
   set,
-  String: { camelize, capitalize }
+  String: { camelize, capitalize, dasherize }
 } = Ember;
 
 export default Ember.Route.extend({
@@ -23,13 +24,15 @@ export default Ember.Route.extend({
     set(this, 'params', params);
 
     const resource = get((params || {}), 'resource');
+    set(this, 'start', moment().utc());
     if (resource) {
-      return this.store.query(capitalize(camelize(resource)), {})
-        .then((resources => {
-          return resources.map((r) => {
-            return r.toJSON();
-          });
-        }))
+      return this.store.query(capitalize(camelize(resource)), {
+        _count: 20
+      })
+        .then((resources) => {
+          set(this, 'end', moment().utc());
+          return resources;
+        })
 				.catch(() => {
 					return A();
 				});
@@ -43,16 +46,32 @@ export default Ember.Route.extend({
 
     set(controller, 'empty', isEmpty(model));
 
-    if (isEmpty(model)) {
-      const params = get(this, 'params') || {},
-        resource = get(params, 'resource');
+    const params = get(this, 'params') || {},
+      resource = get(params, 'resource');
 
+    if (isEmpty(model)) {
       if (isPresent(resource)) {
         get(this, 'notifications').warning('No matching results could be retrieved!', {
           autoClear: true
         });
       }
     }
+
+    const start = get(this, 'start'),
+      end = get(this, 'end'),
+      diff = end.diff(start);
+    set(controller, 'elapsed', diff < 1000 ? `in ${diff}ms` : end.from(start));
+    set(controller, 'code', `
+      routes/${dasherize(resource)}.js
+
+      ...
+      model() {
+        return this.store.query(${resource}, {
+          _count: 20
+        });
+      }
+      ...
+    `);
   },
 
   actions: {

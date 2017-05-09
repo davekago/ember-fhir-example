@@ -51,6 +51,138 @@ if empty
         ' Retrieve the server's capability statement
         em (a.k.a Conformance)
 else
-  p.lead = resource
-  pre
-    = to-json model
+  .row
+    .col-sm-6
+      p.lead = resource
+    .col-sm-6
+      .pull-right.powered-by
+        ' Powered By:
+        img.img-responsive src='/images/hapi_fhir_banner.png' alt='Hapi FHIR'
+      .clearfix
+
+  .well
+    ' Executed request against FHIR RESTful server
+    strong = elapsed
+
+  .panel.panel-default
+    .panel-heading
+      strong
+        ' Client Code -
+      | We used the following code snippet to execute this action
+    .panel-body
+      = code-block [
+        code=code
+      ]
+
+  .panel.panel-default
+    table.table.table-striped.table-hover.table-bordered
+      tbody
+        tr
+          td
+            strong
+              = fa-icon 'chevron-right'
+              '
+              | Request
+          td
+            ' GET
+            a href='http://fhirtest.uhn.ca/baseDstu3/{{capitalize (camelize resource)}}?_pretty=true' target='_blank'
+              | http://fhirtest.uhn.ca/baseDstu3/
+              = capitalize (camelize resource)
+              | ?_pretty=true
+        tr
+          td
+            strong Request Headers
+          td
+            small.block
+              span.text-muted Accept-Charset:
+              span.text-success utf-8
+            small.block
+              span.text-muted Accept
+              span.text-success application/fhir+xml;q=1.0, application/fhir+json;q=1.0, application/xml+fhir;q=0.9, application/json+fhir;q=0.9
+            small.block
+              span.text-muted User-Agent:
+              span.text-success HAPI-FHIR/2.5-SNAPSHOT (FHIR Client; FHIR 3.0.1/DSTU3; apache)
+            small.block
+              span.text-muted Accept-Encoding:
+              span.text-success gzip
+
+  .panel.panel-default
+    table.table.table-striped.table-hover.table-bordered
+      tbody
+        tr
+          td
+            strong
+              = fa-icon 'chevron-left'
+              '
+              | Respones
+          td
+            = fa-icon 'check' class='text-success'
+            '
+            | HTTP/1.1 200 OK
+        tr
+          td
+            strong Response Headers
+          td
+            small.block
+              span.text-muted Server:
+              span.text-success nginx/1.10.0 (Ubuntu)
+            small.block
+              span.text-muted Date:
+              span.text-success = moment-format (now) 'D MMM YYYY'
+            small.block
+              span.text-muted Content-Type:
+              span.text-success application/fhir+json;charset=utf-8
+            small.block
+              span.text-muted Transfer-Encoding:
+              span.text-success chunked
+            small.block
+              span.text-muted Connection:
+              span.text-success keep-alive
+            small.block
+              span.text-muted X-Powered-By:
+              span.text-success HAPI FHIR 2.5-SNAPSHOT REST Server (FHIR Server; FHIR 3.0.1/DSTU3)
+        tr
+          td
+            strong Result Body
+          td.results
+            .panel.panel-default
+              .panel-heading
+                strong Bundle contains {{ model.length }} entries
+              .panel-body
+                .table-responsive
+                  table.table.table-striped.table-hover.table-condensed
+                    thead
+                      tr
+                        th
+                        th ID
+                        th Updated
+                        th Version
+                    tbody
+                      = each model as |res|
+                        tr
+                          td
+                            a.btn.btn-primary.btn-xs type='button' href='http://fhirtest.uhn.ca/baseDstu3/{{resource}}/{{res.id}}{{or (and res.meta.versionId (concat '/_history/' res.meta.versionId)) ''}}' target='_blank'
+                              = fa-icon 'book'
+                              '
+                              | Read
+                          td
+                            a href='http://fhirtest.uhn.ca/baseDstu3/{{resource}}/{{res.id}}{{or (and res.meta.versionId (concat '/_history/' res.meta.versionId)) ''}}' target='_blank'
+                              = resource
+                              | /
+                              = res.id
+                              if res.meta.versionId
+                                | /_history/
+                                = res.meta.versionId
+                          td
+                            if res.meta.lastUpdated
+                              = moment-format res.meta.lastUpdated 'YYYY-MM-DD HH:mm:ss'
+                            else
+                              | -
+                          td = res.meta.versionId
+            .panel.panel-default
+              .panel-heading
+                strong Json Results
+              .panel-body
+                = code-block [
+                  code=(to-json model)
+                ]
